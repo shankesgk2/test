@@ -13,10 +13,16 @@ import { LayoutModule } from './layout/layout.module';
 import { StartupService } from './core/services/startup.service';
 import { MenuService } from './core/services/menu.service';
 import { SettingsService } from './core/services/settings.service';
+import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from '@core/net/token/token.interceptor';
+import { AuthGuard } from './core/net/token/login.guard';
 
 export function StartupServiceFactory(startupService: StartupService): Function {
     return () => startupService.load();
+}
+
+export function tokenGetter() {
+    return localStorage.getItem('token');
 }
 
 @NgModule({
@@ -29,7 +35,17 @@ export function StartupServiceFactory(startupService: StartupService): Function 
         SharedModule.forRoot(),
         CoreModule,
         LayoutModule,
-        RoutesModule
+        RoutesModule,
+        JwtModule.forRoot({
+            config: {
+              tokenGetter: tokenGetter,
+              // whitelistedDomains: ['localhost:4200', 'ds.com', 'www.ds.com'],
+              headerName: 'Authorization',
+              authScheme: 'Bearer ',
+              throwNoTokenError: false,
+              skipWhenExpired: true
+            }
+          })
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
@@ -39,7 +55,8 @@ export function StartupServiceFactory(startupService: StartupService): Function 
             useFactory: StartupServiceFactory,
             deps: [StartupService],
             multi: true
-        }
+        },
+        AuthGuard
     ],
     bootstrap: [AppComponent]
 })
