@@ -37,22 +37,12 @@
                 </div>
                 <div nz-form-item nz-row>
                     <div nz-col [nzSpan]="24">
-                        <button nz-button [disabled]="!valForm.valid" [nzType]="'primary'" [nzSize]="'large'" class="ant-btn__block">
+                        <button nz-button [disabled]="!valForm.valid" [nzLoading]="loginLoadding" [nzType]="'primary'" [nzSize]="'large'" class="ant-btn__block">
                             <span>登录</span>
                         </button>
                     </div>
                 </div>
             </form>
-            <div nz-form-item nz-row>
-                <div nz-col [nzSpan]="24" class="text-center">或</div>
-            </div>
-            <div nz-row>
-                <div nz-col [nzSpan]="24">
-                    <button nz-button [routerLink]="['/register']" [nzType]="'default'" [nzSize]="'large'" class="ant-btn__block">
-                        <span>立即注册</span>
-                    </button>
-                </div>
-            </div>
         </nz-card>
         <div class="p-lg text-center text-sm">
             &copy; {{ settings.app.year }} - {{ settings.app.name }}
