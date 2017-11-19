@@ -1,13 +1,16 @@
+import { LoginService } from '@core/services/login.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SettingsService } from '@core/services/settings.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import {NzMessageService} from 'ng-zorro-antd';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NzMessageService } from 'ng-zorro-antd';
+import { _HttpClient } from '@core/services/http.client';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
+
 @Component({
   selector: 'app-pages-login',
   templateUrl: './login.component.html'
@@ -16,7 +19,7 @@ export class LoginComponent implements OnInit {
   valForm: FormGroup;
   loginLoadding: boolean;
 
-  constructor(public settings: SettingsService, public _message: NzMessageService, public jwtHelper: JwtHelperService, private http: HttpClient, fb: FormBuilder, private router: Router) {
+  constructor(public settings: SettingsService, private loginserv: LoginService, public _message: NzMessageService, public jwtHelper: JwtHelperService, private http: _HttpClient, fb: FormBuilder, private router: Router) {
     this.loginLoadding = false;
     this.valForm = fb.group({
       email: [null, Validators.compose([Validators.required, Validators.email])],
@@ -25,11 +28,10 @@ export class LoginComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    const token = this.jwtHelper.tokenGetter();
-    if (token != null) {
-      if (!this.jwtHelper.isTokenExpired(token)) {
-        this.router.navigate(['/']);
-      }
+    console.log(this.loginserv.islogin());
+    
+    if (this.loginserv.islogin()) {
+      this.router.navigate(['/']);
     }
   }
 
@@ -42,18 +44,20 @@ export class LoginComponent implements OnInit {
       };
       this.loginLoadding = true;
       return new Promise((resolve, reject) => {
-        this.http.post('login', value)
-          .subscribe((res: any) => {
-            localStorage.setItem('token', res.token);
+        this.http.post('login', value, {observe: 'response'})
+          .subscribe((resp: any) => {
+            console.log(resp);
+            
+            localStorage.setItem('token', resp.token);
             this.router.navigate(['dashboard']);
-            resolve(res);
+            resolve(resp);
           }, (err: HttpErrorResponse) => {
             this.loginLoadding = false;
             if (err.error instanceof Error) {
               this._message.create('error', err.error.message);
             } else {
               this._message.create('error', '用户名或密码错误，登录失败');
-            }            
+            }
             resolve(null);
           });
       });

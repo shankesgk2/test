@@ -5,6 +5,7 @@ import { SharedModule } from '@shared/shared.module';
 
 import { LoginComponent } from './login/login.component';
 import { LockComponent } from './lock/lock.component';
+import { ForgetComponent } from './forget/forget.component';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { LockComponent } from './lock/lock.component';
   ],
   declarations: [
     LoginComponent,
-    LockComponent
+    LockComponent,
+    ForgetComponent
   ]
 })
 export class PagesModule { }

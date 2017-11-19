@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { LoginService } from '@core/services/login.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
 
-    constructor(private router: Router, private jwtHelper: JwtHelperService) { }
+    constructor(private router: Router, private jwtHelper: JwtHelperService, private loginserv: LoginService) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        if (this.islogin()) {
+        if (this.loginserv.islogin()) {
             return true;
         } else {
             this.router.navigate(['/login']);
@@ -19,16 +20,5 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         return this.canActivate(route, state);
-    }
-
-    // 检查是否登录
-    private islogin(url?: string): boolean {
-        const token = this.jwtHelper.tokenGetter();
-        if (token != null) {
-            console.error(token);
-            return !this.jwtHelper.isTokenExpired(token);
-        } else {
-            return false;
-        }
     }
 }
