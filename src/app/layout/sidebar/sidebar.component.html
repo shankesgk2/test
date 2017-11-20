@@ -8,9 +8,9 @@
             </div>
         </div>
         <ul nz-menu>
-            <li nz-menu-item (click)="msgSrv.success('profile')">{{ 'profile' }}</li>
-            <li nz-menu-item (click)="msgSrv.success('settings')">{{ 'settings' }}</li>
-            <li nz-menu-item (click)="msgSrv.success('logout')">{{ 'logout' }}</li>
+            <li nz-menu-item (click)="msgSrv.success('profile')">个人中心</li>
+            <li nz-menu-item (click)="msgSrv.success('settings')">设置</li>
+            <li nz-menu-item (click)="logout()">退出</li>
         </ul>
     </nz-dropdown>
     <app-layout-nav class="d-block py-lg"></app-layout-nav>

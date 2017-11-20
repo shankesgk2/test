@@ -12,6 +12,7 @@ import { RoutesModule } from './routes/routes.module';
 import { LayoutModule } from './layout/layout.module';
 import { StartupService } from './core/services/startup.service';
 import { MenuService } from './core/services/menu.service';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { SettingsService } from './core/services/settings.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from '@core/net/token/token.interceptor';
@@ -36,6 +37,7 @@ export function tokenGetter() {
         CoreModule,
         LayoutModule,
         RoutesModule,
+        Ng4LoadingSpinnerModule,
         JwtModule.forRoot({
             config: {
               tokenGetter: tokenGetter,

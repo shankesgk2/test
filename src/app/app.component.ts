@@ -7,7 +7,10 @@ import { TitleService } from '@core/services/title.service';
 
 @Component({
   selector: 'app-root',
-  template: `<router-outlet></router-outlet>`
+  template: `
+  <app-spinner></app-spinner>
+  <router-outlet></router-outlet>
+  `
 })
 export class AppComponent implements OnInit {
 
@@ -16,7 +19,7 @@ export class AppComponent implements OnInit {
   @HostBinding('class.aside-collapsed') get isCollapsed() { return this.settings.layout.collapsed; }
 
   constructor(
-    private theme: ThemesService, 
+    private theme: ThemesService,
     private settings: SettingsService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -25,20 +28,20 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.router
-        .events
-        .filter(evt => evt instanceof NavigationEnd)
-        .map(() => this.activatedRoute)
-        .map(route => {
-          while (route.firstChild) {
-            route = route.firstChild;
-          }
-          return route;
-        })
-        .filter((route) => route.outlet === 'primary')
-        .mergeMap((route) => route.data)
-        .subscribe(event => {
-          const t = event['title'];
-          this.titleSrv.setTitle(t);
-        });
+      .events
+      .filter(evt => evt instanceof NavigationEnd)
+      .map(() => this.activatedRoute)
+      .map(route => {
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        return route;
+      })
+      .filter((route) => route.outlet === 'primary')
+      .mergeMap((route) => route.data)
+      .subscribe(event => {
+        const t = event['title'];
+        this.titleSrv.setTitle(t);
+      });
   }
 }
