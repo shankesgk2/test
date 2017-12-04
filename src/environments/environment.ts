@@ -4,7 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-    SERVER_URL: `http://www.ds.com/api/admin/`,
+    SERVER_URL: `http://api.ds.com/admin/`,
     production: false,
     hmr: false
 };

@@ -36,7 +36,8 @@ export class TokenInterceptor implements HttpInterceptor {
         //     // 正常token值放在请求header当中，具体格式以后端为准
         //     header = req.headers.set('Accept', 'application/vnd.ds.v1+json');
         // }
-        header = req.headers.set('Accept', 'application/vnd.ds.v1+json');
+        const token = localStorage.getItem('token');
+        header = req.headers.append('Accept', 'application/vnd.ds.v1+json');
         // 统一加上服务端前缀
         let url = req.url;
         if (!url.startsWith('https://') && !url.startsWith('http://')) {

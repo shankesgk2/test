@@ -15,6 +15,7 @@ export const routes = [
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
+            { path: 'admins', loadChildren: './admins/admins.module#AdminsModule', data: { title: '仪表盘' } }
         ]
     },
     // 单页不包裹Layout
