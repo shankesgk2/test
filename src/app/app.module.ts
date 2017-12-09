@@ -37,7 +37,7 @@ export function tokenGetter() {
         CoreModule,
         LayoutModule,
         RoutesModule,
-        Ng4LoadingSpinnerModule,
+        Ng4LoadingSpinnerModule.forRoot(),
         JwtModule.forRoot({
             config: {
               tokenGetter: tokenGetter,
